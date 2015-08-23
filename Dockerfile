@@ -14,7 +14,9 @@ RUN apt-get update \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
     && rm -f /etc/apache2/sites-enabled/* \
     && rm -f /etc/apache2/sites-available/* \
-    && sed -i 's/export APACHE_LOG_DIR.*/export APACHE_LOG_DIR=\/dev\/stdout/g' /etc/apache2/envvars
+    && sed -i 's/export APACHE_LOG_DIR.*/export APACHE_LOG_DIR=\/dev\/stdout/g' /etc/apache2/envvars \
+    && sed -i 's/^ErrorLog .*/ErrorLog \/dev\/stdout/g' /etc/apache2/apache2.conf \
+    && sed -i 's/^CustomLog .*/#CustomLog \/dev\/stdout vhost_combined/g' /etc/apache2/conf-enabled/other-vhosts-access-log.conf
 
 COPY vhosts/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
