@@ -1,25 +1,29 @@
 # README #
 
-This repo contains build files for basic Apache-based Docker images, suitable
-for many web applications or for use in deriving your own, more specific images.
+This is originally based off the image here: https://hub.docker.com/r/eboraas/apache/
 
-Included are the following:  
+This is a simple Apache image. To use this image properly, you need to mount your sites content in 1 of two ways.
 
-- apache: A simple Apache install, including SSL support
-- apache-php: The above, but including PHP5 support
-- laravel: As apache-php, with the Laravel framework ready for your app code
-- phalcon: As apache-php, with the Phalcon framework ready for your app code
+1) `-v /home/joe/mysite:/var/www/` where in there, exists a directory named `html`
+2) `-v /home/joe/mysite/html:/var/www/html`
+ 
+Apache serves the actual content, the document root, from `/var/www/html` with the index files listed as `index.php index.html`
 
-Feel free to derive images from any of the above, which are available as
-eboraas/apache, eboraas/apache-php, eboraas/laravel, and eboraas/phalcon. I
-do try to keep the public builds as up-to-date as possible.
+## A note on SSL ##
 
-They are built, by default, against my Debian images, which are publicly available
-via Docker Hub, and can thus be built as-is or retargeted against other Debian 
-base images, if you prefer.
+Originally, there was support for SSL in this repo, but I removed it as my setup is configured to have SSL handled through
+`tutum/haproxy`. Instructions to do so are here: https://github.com/tutumcloud/haproxy#ssl-termination
 
-If you're interested, sources for my Debian images and instructions for
-building your own can be found at:  
-  https://bitbucket.org/EdBoraas/debian-docker
+## Logging ## 
 
--Ed
+Apache is setup to log everything to `/std/out` it can be picked up by https://github.com/tutumcloud/syslogger and sent
+to places like loggly or papertrail
+
+## Simple Examples ##
+
+Assuming you have your content at /home/jdoe/mysite/, the below will be sufficient to serve it. Note that many Docker 
+users encourage mounting data from a storage container, rather than directly from the filesyetem.
+
+- "It works!": `docker run -p 80:80 -d eboraas/apache` and browse to the host's IP address using http
+- ... using non-standard ports: `docker -p 8080:80 -v /home/jdoe/mysite/:/var/www/ -d eboraas/apache`
+
