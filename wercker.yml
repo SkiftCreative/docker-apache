@@ -28,11 +28,11 @@ build:
 deploy:
   steps:
     - internal/docker-push:
-      username: $HUB_USERNAME
-      password: $HUB_PASSWORD
-      tag: latest
-      repository: skiftcreative/apache
-      registry: https://registry.hub.docker.com
+        username: $HUB_USERNAME
+        password: $HUB_PASSWORD
+        tag: latest
+        repository: skiftcreative/apache
+        registry: https://registry.hub.docker.com
     #- internal/docker-push:
     #    username: $QUAY_USERNAME
     #    password: $QUAY_PASSWORD
