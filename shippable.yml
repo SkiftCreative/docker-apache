@@ -1,0 +1,6 @@
+script:
+  - true
+
+branches:
+  only:
+    - master
